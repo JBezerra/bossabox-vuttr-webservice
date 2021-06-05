@@ -18,6 +18,13 @@ export default class ToolsRepository implements IToolRepository {
     return tool;
   }
 
+  public async findByTag(tag: string): Promise<Tool[] | undefined> {
+    const tools = this.tools.filter(tool => {
+      return tool.tags.includes(tag);
+    });
+    return tools;
+  }
+
   public async delete(id: string): Promise<Tool | undefined> {
     const findIndex = this.tools.findIndex(tool => {
       return tool.id === id;

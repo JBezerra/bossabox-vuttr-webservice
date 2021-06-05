@@ -1,10 +1,10 @@
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Raw, Repository } from 'typeorm';
 
 import ICreateToolDTO from '@modules/tools/dtos/ICreateToolDTO';
-import IToolRepository from '@modules/tools/repositories/IToolRepository';
+import IToolsRepository from '@modules/tools/repositories/IToolsRepository';
 import Tool from '../entities/Tool';
 
-export default class ToolsRepository implements IToolRepository {
+export default class ToolsRepository implements IToolsRepository {
   private ormRepository: Repository<Tool>;
 
   constructor() {
@@ -30,6 +30,15 @@ export default class ToolsRepository implements IToolRepository {
     });
     this.ormRepository.save(tool);
     return tool;
+  }
+
+  public async findByTag(tag: string): Promise<Tool[] | undefined> {
+    const tools = this.ormRepository.find({
+      tags: Raw(alias => `${alias} IN (:...titles)`, {
+        tags: [tag],
+      }),
+    });
+    return tools;
   }
 
   public async delete(id: string): Promise<Tool | undefined> {
