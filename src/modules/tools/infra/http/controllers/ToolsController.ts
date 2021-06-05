@@ -31,14 +31,6 @@ export default class ToolsController {
     return response.status(201).json(tool);
   }
 
-  public async show(request: Request, response: Response): Promise<Response> {
-    let { tag } = request.query;
-    tag = String(tag);
-    const findToolsByTag = container.resolve(FindToolsByTagService);
-    const tools = await findToolsByTag.execute({ tag });
-    return response.status(200).json(tools);
-  }
-
   public async destroy(
     request: Request,
     response: Response,
