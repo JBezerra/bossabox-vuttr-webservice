@@ -19,7 +19,15 @@ toolsRouter.post(
   }),
   toolsController.create,
 );
-toolsRouter.get('/', toolsController.show);
+toolsRouter.get(
+  '/',
+  celebrate({
+    [Segments.QUERY]: {
+      tag: Joi.string().required(),
+    },
+  }),
+  toolsController.show,
+);
 toolsRouter.delete(
   '/:id',
   celebrate({

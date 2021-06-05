@@ -1,4 +1,4 @@
-import { getRepository, Raw, Repository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 
 import ICreateToolDTO from '@modules/tools/dtos/ICreateToolDTO';
 import IToolsRepository from '@modules/tools/repositories/IToolsRepository';
@@ -28,16 +28,17 @@ export default class ToolsRepository implements IToolsRepository {
       link,
       tags,
     });
-    this.ormRepository.save(tool);
+    await this.ormRepository.save(tool);
     return tool;
   }
 
   public async findByTag(tag: string): Promise<Tool[] | undefined> {
-    const tools = this.ormRepository.find({
-      tags: Raw(alias => `${alias} IN (:...titles)`, {
-        tags: [tag],
-      }),
-    });
+    const tools = this.ormRepository
+      .createQueryBuilder('tools')
+      .where(`tools.tags @> :tag`, {
+        tag: [tag],
+      })
+      .getMany();
     return tools;
   }
 

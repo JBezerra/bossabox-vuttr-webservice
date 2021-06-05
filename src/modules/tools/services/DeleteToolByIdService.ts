@@ -4,14 +4,11 @@ import Tool from '../infra/typeorm/entities/Tool';
 import IToolRepository from '../repositories/IToolsRepository';
 
 interface IRequest {
-  title: string;
-  link: string;
-  description: string;
-  tags: string[];
+  id: string;
 }
 
 @injectable()
-export default class CreateToolService {
+export default class DeleteToolByIdService {
   private toolsRepository: IToolRepository;
 
   constructor(
@@ -21,18 +18,8 @@ export default class CreateToolService {
     this.toolsRepository = toolsRepository;
   }
 
-  public async execute({
-    title,
-    link,
-    description,
-    tags,
-  }: IRequest): Promise<Tool> {
-    const tool = this.toolsRepository.create({
-      title,
-      link,
-      description,
-      tags,
-    });
+  public async execute({ id }: IRequest): Promise<Tool | undefined> {
+    const tool = this.toolsRepository.delete(id);
     return tool;
   }
 }

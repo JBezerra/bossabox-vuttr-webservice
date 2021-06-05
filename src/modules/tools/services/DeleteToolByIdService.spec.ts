@@ -1,17 +1,17 @@
 import FakeToolsRepository from '@modules/tools/repositories/fakes/FakeToolsRepository';
-import FindToolsByTagService from './FindToolsByTagService';
+import DeleteToolByIdService from './DeleteToolByIdService';
 
 let fakeToolsRepository: FakeToolsRepository;
-let findToolsByTag: FindToolsByTagService;
+let deleteToolById: DeleteToolByIdService;
 
-describe('FindToolsByTag', () => {
+describe('DeleteTools', () => {
   beforeEach(() => {
     fakeToolsRepository = new FakeToolsRepository();
-    findToolsByTag = new FindToolsByTagService(fakeToolsRepository);
+    deleteToolById = new DeleteToolByIdService(fakeToolsRepository);
   });
 
   it('should be able to find a tool by tag', async () => {
-    await fakeToolsRepository.create({
+    const toolOne = await fakeToolsRepository.create({
       title: 'some-title-01',
       description: 'some-description-01',
       link: 'some-link-01',
@@ -19,20 +19,14 @@ describe('FindToolsByTag', () => {
     });
 
     const toolTwo = await fakeToolsRepository.create({
-      title: 'some-title-02',
-      description: 'some-description-02',
-      link: 'some-link-02',
-      tags: ['some-tag-01-02'],
-    });
-
-    await fakeToolsRepository.create({
       title: 'some-title-03',
       description: 'some-description-03',
       link: 'some-link-03',
       tags: ['some-tag-01-03'],
     });
-    const tag = 'some-tag-01-02';
-    const tools = await findToolsByTag.execute({ tag });
+
+    await deleteToolById.execute({ id: toolOne.id });
+    const tools = await fakeToolsRepository.listAll();
 
     expect(tools).toEqual([toolTwo]);
   });
