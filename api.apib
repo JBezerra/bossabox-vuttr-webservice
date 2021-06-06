@@ -1,0 +1,141 @@
+FORMAT: 1A
+HOST: localhost:3000
+
+# Very Useful Tools to Remember API
+This simple API is a simple repository to manage and store tools' name, link, description and tags
+
+# Group Tools
+Resources related to create, list, filter and delete tools.
+
+## Tools [/tool]
+
+### Create Tool [POST]
++ Request JSON object of a Tool (application/json)
+  + Header
+    Authorization: Bearer JWT-Token
+  + Attributes (CreateTool)
++ Response 200 (application/json)
+  {
+    "title": "Notion",
+    "link": "https://notion.so",
+    "description": "All in one tool to organize teams and ideas. Write, plan, collaborate, and get organized. ",
+    "tags": [
+      "organization",
+      "planning",
+      "collaboration",
+      "writing",
+      "calendar"
+    ],
+    "id": "6dae294f-572e-43d1-8a91-5119837da561",
+    "created_at": "2021-06-05T20:38:07.101Z",
+    "updated_at": "2021-06-05T20:38:07.101Z"
+  }
+
+## Tools [/tools/{user_id}]
++ Parameters
+  + user_id: `6dae294f-572e-43d1-8a91-5119837da561` (string, required) - Users's ID to be deleted
+
+### Delete Tool [DELETE]
++ Request
+  + Header
+    Authorization: Bearer JWT-Token
++ Response 204
+
+## Tools [/tools?tag={tag}]
+It will filter the available tools by tag.
++ Parameters
+  + tag: "node" (string, optional) - Choosen tag to filter tools
+
+### Filter Tools [GET]
++ Request
+  + Header
+    Authorization: Bearer JWT-Token
++ Response 200 (application/json)
+  + Attributes (array[Tool])
+
+## Tools [/tools]
+### List Tools [GET]
++ Request
+  + Header
+    Authorization: Bearer JWT-Token
++ Response 200 (application/json)
+  + Attributes (array[Tool])
+
+# Group Users
+## Users [/users]
+Resources related to create, list and authenticate users.
+### Create User [POST]
++ Request JSON object of an user (application/json)
+  + Attributes (CreateUser)
++ Response 200 (application/json)
+  {
+    "name": "José Bezerra",
+    "email": "jbmn2@cin.ufpe.br",
+    "id": "633f79f3-279f-491f-b74f-0827ab923642",
+    "created_at": "2021-06-05T22:26:53.938Z",
+    "updated_at": "2021-06-05T22:26:53.938Z"
+  }
+
+## Sessions [/sessions]
+### Create Sessions [POST]
+This endpoint generates and returns an authentication JWT token that expires in 1d.
++ Request Login JSON object (application/json)
+  + Attributes (AuthenticateUser)
++ Response 200 (application/json)
+  {
+    "user": {
+      "id": "633f79f3-279f-491f-b74f-0827ab923642",
+      "name": "José Bezerra",
+      "email": "jbmn2@cin.ufpe.br",
+      "created_at": "2021-06-05T22:26:53.938Z",
+      "updated_at": "2021-06-05T22:26:53.938Z"
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MjI5MjEzMzcsImV4cCI6MTYyMzAwNzczNywic3ViIjoiNjMzZjc5ZjMtMjc5Zi00OTFmLWI3NGYtMDgyN2FiOTIzNjQyIn0.OHa6sJlLxmb07qnv4YBNrUyEEQZeZWL9VHlC3XkvRpg"
+  }
+
+## Profile [/profile]
+### Show Profile [GET]
++ Request
+  + Header
+    Authorization: Bearer JWT-Token
++ Response 200 (application/json)
+  {
+    "id": "633f79f3-279f-491f-b74f-0827ab923642",
+    "name": "José Bezerra",
+    "email": "jbmn2@cin.ufpe.br",
+    "created_at": "2021-06-05T22:26:53.938Z",
+    "updated_at": "2021-06-05T22:26:53.938Z"
+  }
+
+# Data Structures
+## CreateTool (object)
++ title (string) - Title of the tool
++ link (string) - Link of the tool
++ description (string) - Description of the tool
++ tags (array[string]) - Tags of the tool
+
+## Tool (object)
++ id (string) - Unique identifier of the tool
++ title (string) - Title of the tool
++ link (string) - Link of the tool
++ description (string) - Description of the tool
++ tags (array[string]) - Tags of the tool
++ created_at (string) - Object date of creation in the database
++ updated_at (string) - Object date of the last update in the database
+
+## AuthenticateUser (object)
++ email (string) - Users' email
++ password (string) - Users' password
+
+## CreateUser (object)
++ name (string) - Users' name
++ email (string) - Users' email
++ password (string) - Users' password
+
+## User (object)
++ id (string) - Unique identifier of the user
++ name (string) - Users' name
++ email (string) - Users' email
++ password (string) - Users' password
++ created_at (string) - Object date of creation in the database
++ updated_at (string) - Object date of the last update in the database
