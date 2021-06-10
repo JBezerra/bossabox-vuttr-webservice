@@ -44,6 +44,7 @@
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
+    "ioredis": "^4.27.5",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.3.2",
     "rate-limiter-flexible": "^2.2.2",
